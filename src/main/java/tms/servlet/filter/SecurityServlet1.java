@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(servletNames = {"CalculatorServlet", "FindHistoryServlet"}
+@WebFilter(servletNames = {"CalculatorServlet", "FindHistoryServlet","LogoutServlet"}
 )
-public class SecurityServlet extends HttpFilter {
+public class SecurityServlet1 extends HttpFilter {
 
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         if (req.getSession().getAttribute("currentUser") != null) {
             chain.doFilter(req, res);
         } else {
-            res.sendRedirect("/auth");
+            res.sendRedirect("/");
         }
     }
 }

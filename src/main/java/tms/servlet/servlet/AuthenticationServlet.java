@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
 
-@WebServlet(urlPatterns = "/auth")
+@WebServlet(urlPatterns = "/auth", name="AuthenticationServlet")
 public class AuthenticationServlet extends HttpServlet {
 
     private final DBUserStorage dbUserStorage = new DBUserStorage();
@@ -26,10 +26,10 @@ public class AuthenticationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
-        Optional<User> byUserName = null;
+        Optional<User> byUserName;
 
         try {
-            byUserName = dbUserStorage.findByUserName(username);
+            byUserName  = dbUserStorage.findByUserName(username);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

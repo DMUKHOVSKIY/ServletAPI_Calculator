@@ -6,6 +6,8 @@ import java.sql.SQLException;
 
 public class DBConnection {
 
+    private Connection connection;
+
     static {
         try {
             Class.forName("org.postgresql.Driver");
@@ -15,7 +17,6 @@ public class DBConnection {
     }
 
     public Connection connection() {
-        Connection connection;
         try {
             connection = DriverManager.
                     getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "123456");
@@ -24,4 +25,5 @@ public class DBConnection {
         }
         return connection;
     }
+
 }

@@ -58,8 +58,14 @@
         <ul class="list-group">
             <%
                 List<Operation> operations = (List<Operation>) request.getAttribute("operations");
-                for (Operation operation : operations) {
-                    out.println("<li class=\"list-group-item\">" + operation + "</li>");
+                if (operations.isEmpty()) {
+                    out.print("<center><div class=\"alert alert-primary\" role=\"alert\">\n" +
+                            "   There are no operations yet" + "\n" +
+                            "      </div><center>");
+                } else {
+                    for (Operation operation : operations) {
+                        out.println("<li class=\"list-group-item\">" + operation + "</li>");
+                    }
                 }
             %>
         </ul>

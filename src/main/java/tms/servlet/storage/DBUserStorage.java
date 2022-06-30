@@ -24,17 +24,16 @@ public class DBUserStorage {
                 prepareStatement("select * from training15userstorage where username=?");
         preparedStatement.setString(1, username);
         ResultSet resultSet = preparedStatement.executeQuery();
-        User user = new User();
+        User user;
         if (resultSet.next()) {
+            user = new User();
             user.setName(resultSet.getString(2));
             user.setUsername(resultSet.getString(3));
-            if (user.getUsername() == null) {
-                return Optional.empty();
-            }
             user.setPassword(resultSet.getString(4));
+            return Optional.of(user);
         }
 
-        return Optional.of(user);
+        return Optional.empty();
     }
 
 
