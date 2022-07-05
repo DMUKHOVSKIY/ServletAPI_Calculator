@@ -1,8 +1,9 @@
-package tms.servlet.servlet;
+package web.servlet;
 
 import tms.servlet.entity.Operation;
 import tms.servlet.entity.User;
 import tms.servlet.storage.DBOperationStorage;
+import tms.servlet.storage.OperationStorage;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,19 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
+
 
 @WebServlet(urlPatterns = "/findHistory", name = "FindHistoryServlet")
 public class FindHistoryServlet extends HttpServlet {
 
-    private final DBOperationStorage dbOperationStorage= new DBOperationStorage();
+    private final OperationStorage operationStorage= new DBOperationStorage();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User currentUser = (User) req.getSession().getAttribute("currentUser");
         List<Operation> allOperationByUsername;
         try {
-              allOperationByUsername = dbOperationStorage.findAllOperationByUserName(currentUser.getUsername());
+              allOperationByUsername = operationStorage.findAllOperationByUserName(currentUser.getUsername());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -1,4 +1,4 @@
-package tms.servlet.servlet;
+package web.servlet;
 
 import tms.servlet.service.CalculatorService;
 import tms.servlet.entity.User;

@@ -6,10 +6,11 @@ import tms.servlet.service.DBConnection;
 import java.sql.*;
 import java.util.Optional;
 
-public class DBUserStorage {
+public class DBUserStorage implements UserStorage {
 
     private final DBConnection dbConnection = new DBConnection();
 
+    @Override
     public void save(User user) throws SQLException {
         PreparedStatement preparedStatement = dbConnection.connection().
                 prepareStatement("insert into training15userstorage values (default, ?,?,?)");
@@ -19,6 +20,7 @@ public class DBUserStorage {
         preparedStatement.execute();
     }
 
+    @Override
     public Optional<User> findByUserName(String username) throws SQLException {
         PreparedStatement preparedStatement = dbConnection.connection().
                 prepareStatement("select * from training15userstorage where username=?");

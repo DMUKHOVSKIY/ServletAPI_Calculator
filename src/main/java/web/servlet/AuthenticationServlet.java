@@ -1,7 +1,8 @@
-package tms.servlet.servlet;
+package web.servlet;
 
 import tms.servlet.entity.User;
 import tms.servlet.storage.DBUserStorage;
+import tms.servlet.storage.UserStorage;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +16,7 @@ import java.util.Optional;
 @WebServlet(urlPatterns = "/auth", name="AuthenticationServlet")
 public class AuthenticationServlet extends HttpServlet {
 
-    private final DBUserStorage dbUserStorage = new DBUserStorage();
+    private final UserStorage userStorage = new DBUserStorage();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,7 +30,7 @@ public class AuthenticationServlet extends HttpServlet {
         Optional<User> byUserName;
 
         try {
-            byUserName  = dbUserStorage.findByUserName(username);
+            byUserName  = userStorage.findByUserName(username);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

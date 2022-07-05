@@ -3,15 +3,15 @@ package tms.servlet.service;
 import tms.servlet.entity.Operation;
 import tms.servlet.entity.User;
 import tms.servlet.storage.DBOperationStorage;
+import tms.servlet.storage.OperationStorage;
 
-import java.sql.Date;
+
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 public class CalculatorService {
     private final Operation saveOperation = new Operation();
-    private final DBOperationStorage dbOperationStorage = new DBOperationStorage();
+    private final OperationStorage operationStorage = new DBOperationStorage();
 
     public double calc(double num1, double num2, String operation, User currentUser) {
         double result = 0;
@@ -35,7 +35,7 @@ public class CalculatorService {
         saveOperation.setResult(result);
         saveOperation.setUser(currentUser);
         try {
-            dbOperationStorage.save(saveOperation);
+            operationStorage.save(saveOperation);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

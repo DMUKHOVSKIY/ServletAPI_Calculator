@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DBOperationStorage {
+public class DBOperationStorage implements OperationStorage {
 
-    private final DBUserStorage dbUserStorage = new DBUserStorage();
+    private final UserStorage userStorage = new DBUserStorage();
     private final DBConnection dbConnection = new DBConnection();
 
+    @Override
     public void save(Operation operation) throws SQLException {
         PreparedStatement preparedStatement = dbConnection.connection().
                 prepareStatement("insert into training15operationstorage values (default,?,?,?,?,?,?)");
@@ -28,6 +29,7 @@ public class DBOperationStorage {
         preparedStatement.execute();
     }
 
+    @Override
     public List<Operation> findAllOperationByUserName(String username) throws SQLException {
         PreparedStatement preparedStatement = dbConnection.connection().
                 prepareStatement("select * from training15operationstorage where \"user\"=?");
@@ -40,7 +42,7 @@ public class DBOperationStorage {
             operation.setNum1(resultSet.getDouble(2));
             operation.setNum2(resultSet.getDouble(3));
             operation.setOperation(resultSet.getString(4));
-            operation.setUser(dbUserStorage.findByUserName(resultSet.getString(5)).get());
+            operation.setUser(userStorage.findByUserName(resultSet.getString(5)).get());
             operation.setResult(resultSet.getDouble(6));
             operation.setDate(resultSet.getDate(7));
             operations.add(operation);
