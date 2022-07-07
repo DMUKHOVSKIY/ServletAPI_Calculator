@@ -13,10 +13,10 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
 
-@WebServlet(urlPatterns = "/reg", name="RegistrationServlet")
+@WebServlet(urlPatterns = "/reg", name = "RegistrationServlet")
 public class RegistrationServlet extends HttpServlet {
 
-    private final UserStorage userStorage = new DBUserStorage();
+    private final UserStorage userStorage = DBUserStorage.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -38,12 +38,13 @@ public class RegistrationServlet extends HttpServlet {
 
         if (byUserName.isPresent()) {
             req.setAttribute("message", "User with this username is already exists!");
-            getServletContext().getRequestDispatcher("/reg.jsp").forward(req,resp);
+            getServletContext().getRequestDispatcher("/reg.jsp").forward(req, resp);
         } else {
-            User user = new User();
-            user.setName(name);
-            user.setUsername(username);
-            user.setPassword(password);
+            User user = new User.Builder()
+                    .name(name)
+                    .username(username)
+                    .password(password)
+                    .build();
             try {
                 userStorage.save(user);
             } catch (SQLException e) {

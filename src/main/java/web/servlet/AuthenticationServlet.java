@@ -16,7 +16,7 @@ import java.util.Optional;
 @WebServlet(urlPatterns = "/auth", name="AuthenticationServlet")
 public class AuthenticationServlet extends HttpServlet {
 
-    private final UserStorage userStorage = new DBUserStorage();
+    private final UserStorage userStorage = DBUserStorage.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

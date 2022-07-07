@@ -19,11 +19,11 @@
             <form action="/auth" method="post">
                 <div class="mb-3">
                     <label for="exampleInputEmail2" class="form-label">Username</label>
-                    <input name="username" type="text " class="form-control" id="exampleInputEmail2">
+                    <input name="username" type="text " class="form-control" id="exampleInputEmail2" required>
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="exampleInputPassword1">
+                    <input type="password" name="password" class="form-control" id="exampleInputPassword1" required>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Submit</button>
             </form>

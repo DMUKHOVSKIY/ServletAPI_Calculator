@@ -13,7 +13,7 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/calc", name = "CalculatorServlet")
 public class CalculatorServlet extends HttpServlet {
 
-    private final CalculatorService calculatorService = new CalculatorService();
+    private final CalculatorService calculatorService = CalculatorService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

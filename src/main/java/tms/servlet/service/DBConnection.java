@@ -6,8 +6,6 @@ import java.sql.SQLException;
 
 public class DBConnection {
 
-    private Connection connection;
-
     static {
         try {
             Class.forName("org.postgresql.Driver");
@@ -16,14 +14,13 @@ public class DBConnection {
         }
     }
 
-    public Connection connection() {
+    public static Connection connection() {
         try {
-            connection = DriverManager.
+            return DriverManager.
                     getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "123456");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return connection;
     }
 
 }

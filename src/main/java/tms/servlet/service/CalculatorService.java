@@ -10,8 +10,20 @@ import java.sql.SQLException;
 
 
 public class CalculatorService {
-    private final Operation saveOperation = new Operation();
-    private final OperationStorage operationStorage = new DBOperationStorage();
+    private final OperationStorage operationStorage = DBOperationStorage.getInstance();
+    private static volatile CalculatorService instance;
+
+    private CalculatorService() {
+    }
+
+    public static CalculatorService getInstance() {
+        synchronized (CalculatorService.class) {
+            if (instance == null) {
+                instance = new CalculatorService();
+            }
+            return instance;
+        }
+    }
 
     public double calc(double num1, double num2, String operation, User currentUser) {
         double result = 0;
@@ -29,11 +41,13 @@ public class CalculatorService {
                 result = num1 / num2;
                 break;
         }
-        saveOperation.setNum1(num1);
-        saveOperation.setNum2(num2);
-        saveOperation.setOperation(operation);
-        saveOperation.setResult(result);
-        saveOperation.setUser(currentUser);
+        Operation saveOperation = new Operation.Builder()
+                .num1(num1)
+                .num2(num2)
+                .operation(operation)
+                .result(result)
+                .user(currentUser)
+                .build();
         try {
             operationStorage.save(saveOperation);
         } catch (SQLException e) {

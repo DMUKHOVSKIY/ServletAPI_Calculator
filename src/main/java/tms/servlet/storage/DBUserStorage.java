@@ -7,12 +7,23 @@ import java.sql.*;
 import java.util.Optional;
 
 public class DBUserStorage implements UserStorage {
+    private static volatile DBUserStorage instance;
 
-    private final DBConnection dbConnection = new DBConnection();
+    private DBUserStorage() {
+    }
+
+    public static DBUserStorage getInstance() {
+        synchronized (DBUserStorage.class) {
+            if (instance == null) {
+                return new DBUserStorage();
+            }
+            return instance;
+        }
+    }
 
     @Override
     public void save(User user) throws SQLException {
-        PreparedStatement preparedStatement = dbConnection.connection().
+        PreparedStatement preparedStatement = DBConnection.connection().
                 prepareStatement("insert into training15userstorage values (default, ?,?,?)");
         preparedStatement.setString(1, user.getName());
         preparedStatement.setString(2, user.getUsername());
@@ -22,16 +33,16 @@ public class DBUserStorage implements UserStorage {
 
     @Override
     public Optional<User> findByUserName(String username) throws SQLException {
-        PreparedStatement preparedStatement = dbConnection.connection().
+        PreparedStatement preparedStatement = DBConnection.connection().
                 prepareStatement("select * from training15userstorage where username=?");
         preparedStatement.setString(1, username);
         ResultSet resultSet = preparedStatement.executeQuery();
-        User user;
         if (resultSet.next()) {
-            user = new User();
-            user.setName(resultSet.getString(2));
-            user.setUsername(resultSet.getString(3));
-            user.setPassword(resultSet.getString(4));
+            User user = new User.Builder()
+                    .name(resultSet.getString(2))
+                    .username(resultSet.getString(3))
+                    .password(resultSet.getString(4))
+                    .build();
             return Optional.of(user);
         }
 

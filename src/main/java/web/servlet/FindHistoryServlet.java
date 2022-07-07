@@ -18,7 +18,7 @@ import java.util.List;
 @WebServlet(urlPatterns = "/findHistory", name = "FindHistoryServlet")
 public class FindHistoryServlet extends HttpServlet {
 
-    private final OperationStorage operationStorage= new DBOperationStorage();
+    private final OperationStorage operationStorage = DBOperationStorage.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

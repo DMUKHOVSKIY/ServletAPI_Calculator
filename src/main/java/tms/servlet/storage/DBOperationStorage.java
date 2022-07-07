@@ -12,12 +12,24 @@ import java.util.Optional;
 
 public class DBOperationStorage implements OperationStorage {
 
-    private final UserStorage userStorage = new DBUserStorage();
-    private final DBConnection dbConnection = new DBConnection();
+    private final UserStorage userStorage = DBUserStorage.getInstance();
+    private static volatile DBOperationStorage instance;
+
+    private DBOperationStorage() {
+    }
+
+    public static DBOperationStorage getInstance() {
+        synchronized (DBOperationStorage.class) {
+            if (instance == null) {
+                return new DBOperationStorage();
+            }
+            return instance;
+        }
+    }
 
     @Override
     public void save(Operation operation) throws SQLException {
-        PreparedStatement preparedStatement = dbConnection.connection().
+        PreparedStatement preparedStatement = DBConnection.connection().
                 prepareStatement("insert into training15operationstorage values (default,?,?,?,?,?,?)");
         preparedStatement.setDouble(1, operation.getNum1());
         preparedStatement.setDouble(2, operation.getNum2());
@@ -31,20 +43,21 @@ public class DBOperationStorage implements OperationStorage {
 
     @Override
     public List<Operation> findAllOperationByUserName(String username) throws SQLException {
-        PreparedStatement preparedStatement = dbConnection.connection().
+        PreparedStatement preparedStatement = DBConnection.connection().
                 prepareStatement("select * from training15operationstorage where \"user\"=?");
         preparedStatement.setString(1, username);
         ResultSet resultSet = preparedStatement.executeQuery();
         List<Operation> operations = new ArrayList<>();
         while (resultSet.next()) {
-            Operation operation = new Operation();
-            operation.setId(resultSet.getInt(1));
-            operation.setNum1(resultSet.getDouble(2));
-            operation.setNum2(resultSet.getDouble(3));
-            operation.setOperation(resultSet.getString(4));
-            operation.setUser(userStorage.findByUserName(resultSet.getString(5)).get());
-            operation.setResult(resultSet.getDouble(6));
-            operation.setDate(resultSet.getDate(7));
+            Operation operation = new Operation.Builder()
+                    .id(resultSet.getInt(1))
+                    .num1(resultSet.getDouble(2))
+                    .num2(resultSet.getDouble(3))
+                    .operation(resultSet.getString(4))
+                    .user(userStorage.findByUserName(resultSet.getString(5)).get())
+                    .result(resultSet.getDouble(6))
+                    .date(resultSet.getDate(7))
+                    .build();
             operations.add(operation);
         }
 

@@ -8,66 +8,84 @@ public class Operation {
     private double num1;
     private double num2;
     private String operation;
-
     private double result;
     private User user;
     private int id;
-   private Date date;
+    private Date date;
 
-    public double getResult() {
-        return result;
-    }
+    public static class Builder {
+        private final Operation operat;
 
-    public void setResult(double result) {
-        this.result = result;
-    }
+        public Builder() {
+            operat = new Operation();
+        }
 
-    public int getId() {
-        return id;
-    }
+        public Builder num1(double num1) {
+            operat.num1 = num1;
+            return this;
+        }
 
-    public void setId(int id) {
-        this.id = id;
+        public Builder num2(double num2) {
+            operat.num2 = num2;
+            return this;
+        }
+
+        public Builder operation(String operation) {
+            operat.operation = operation;
+            return this;
+        }
+
+        public Builder result(double result) {
+            operat.result = result;
+            return this;
+        }
+
+        public Builder user(User user){
+            operat.user = user;
+            return this;
+        }
+
+        public Builder id(int id){
+            operat.id = id;
+            return this;
+        }
+
+        public Builder date(Date date){
+            operat.date = date;
+            return this;
+        }
+
+        public Operation build(){
+            return operat;
+        }
     }
 
     public double getNum1() {
         return num1;
     }
 
-    public void setNum1(double num1) {
-        this.num1 = num1;
-    }
-
     public double getNum2() {
         return num2;
-    }
-
-    public void setNum2(double num2) {
-        this.num2 = num2;
     }
 
     public String getOperation() {
         return operation;
     }
 
-    public void setOperation(String operation) {
-        this.operation = operation;
+    public double getResult() {
+        return result;
     }
 
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public int getId() {
+        return id;
     }
 
     public Date getDate() {
         return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     @Override
