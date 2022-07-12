@@ -1,8 +1,8 @@
 package web.servlet;
 
 import tms.servlet.entity.User;
-import tms.servlet.storage.DBUserStorage;
-import tms.servlet.storage.UserStorage;
+import tms.servlet.dao.DBUserDao;
+import tms.servlet.dao.UserDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +16,7 @@ import java.util.Optional;
 @WebServlet(urlPatterns = "/reg", name = "RegistrationServlet")
 public class RegistrationServlet extends HttpServlet {
 
-    private final UserStorage userStorage = DBUserStorage.getInstance();
+    private final UserDao userDao = DBUserDao.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,7 +31,7 @@ public class RegistrationServlet extends HttpServlet {
         Optional<User> byUserName;
 
         try {
-            byUserName = userStorage.findByUserName(username);
+            byUserName = userDao.findByUserName(username);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -46,7 +46,7 @@ public class RegistrationServlet extends HttpServlet {
                     .password(password)
                     .build();
             try {
-                userStorage.save(user);
+                userDao.save(user);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

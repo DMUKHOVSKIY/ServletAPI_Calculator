@@ -1,6 +1,7 @@
 package web.servlet;
 
 import tms.servlet.service.CalculatorService;
+import tms.servlet.service.CalculatorServiceImpl;
 import tms.servlet.entity.User;
 
 import javax.servlet.ServletException;
@@ -13,7 +14,7 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/calc", name = "CalculatorServlet")
 public class CalculatorServlet extends HttpServlet {
 
-    private final CalculatorService calculatorService = CalculatorService.getInstance();
+    private final CalculatorService calculatorService = CalculatorServiceImpl.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

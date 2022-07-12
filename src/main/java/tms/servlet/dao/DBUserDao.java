@@ -1,21 +1,20 @@
-package tms.servlet.storage;
+package tms.servlet.dao;
 
 import tms.servlet.entity.User;
-import tms.servlet.service.DBConnection;
 
 import java.sql.*;
 import java.util.Optional;
 
-public class DBUserStorage implements UserStorage {
-    private static volatile DBUserStorage instance;
+public class DBUserDao implements UserDao {
+    private static volatile DBUserDao instance;
 
-    private DBUserStorage() {
+    private DBUserDao() {
     }
 
-    public static DBUserStorage getInstance() {
-        synchronized (DBUserStorage.class) {
+    public static DBUserDao getInstance() {
+        synchronized (DBUserDao.class) {
             if (instance == null) {
-                return new DBUserStorage();
+                return new DBUserDao();
             }
             return instance;
         }
@@ -23,7 +22,7 @@ public class DBUserStorage implements UserStorage {
 
     @Override
     public void save(User user) throws SQLException {
-        PreparedStatement preparedStatement = DBConnection.connection().
+        PreparedStatement preparedStatement = DBConnectionFactory.connection().
                 prepareStatement("insert into training15userstorage values (default, ?,?,?)");
         preparedStatement.setString(1, user.getName());
         preparedStatement.setString(2, user.getUsername());
@@ -33,7 +32,7 @@ public class DBUserStorage implements UserStorage {
 
     @Override
     public Optional<User> findByUserName(String username) throws SQLException {
-        PreparedStatement preparedStatement = DBConnection.connection().
+        PreparedStatement preparedStatement = DBConnectionFactory.connection().
                 prepareStatement("select * from training15userstorage where username=?");
         preparedStatement.setString(1, username);
         ResultSet resultSet = preparedStatement.executeQuery();

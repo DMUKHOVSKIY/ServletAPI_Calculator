@@ -1,8 +1,6 @@
 package tms.servlet.entity;
 
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class Operation {
     private double num1;
@@ -14,50 +12,54 @@ public class Operation {
     private Date date;
 
     public static class Builder {
-        private final Operation operat;
+        private final Operation op;
 
         public Builder() {
-            operat = new Operation();
+            op = new Operation();
         }
 
         public Builder num1(double num1) {
-            operat.num1 = num1;
+            op.num1 = num1;
             return this;
         }
 
         public Builder num2(double num2) {
-            operat.num2 = num2;
+            op.num2 = num2;
             return this;
         }
 
         public Builder operation(String operation) {
-            operat.operation = operation;
+            op.operation = operation;
             return this;
         }
 
         public Builder result(double result) {
-            operat.result = result;
+            op.result = result;
             return this;
         }
 
         public Builder user(User user){
-            operat.user = user;
+            op.user = user;
             return this;
         }
 
         public Builder id(int id){
-            operat.id = id;
+            op.id = id;
             return this;
         }
 
         public Builder date(Date date){
-            operat.date = date;
+            op.date = date;
             return this;
         }
 
         public Operation build(){
-            return operat;
+            return op;
         }
+    }
+
+    public void setResult(double result) {
+        this.result = result;
     }
 
     public double getNum1() {

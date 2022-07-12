@@ -1,27 +1,24 @@
-package tms.servlet.storage;
+package tms.servlet.dao;
 
 
 import tms.servlet.entity.Operation;
-import tms.servlet.service.DBConnection;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-public class DBOperationStorage implements OperationStorage {
+public class DBOperationDao implements OperationDao {
 
-    private final UserStorage userStorage = DBUserStorage.getInstance();
-    private static volatile DBOperationStorage instance;
+    private final UserDao userDao = DBUserDao.getInstance();
+    private static volatile DBOperationDao instance;
 
-    private DBOperationStorage() {
+    private DBOperationDao() {
     }
 
-    public static DBOperationStorage getInstance() {
-        synchronized (DBOperationStorage.class) {
+    public static DBOperationDao getInstance() {
+        synchronized (DBOperationDao.class) {
             if (instance == null) {
-                return new DBOperationStorage();
+                return new DBOperationDao();
             }
             return instance;
         }
@@ -29,7 +26,7 @@ public class DBOperationStorage implements OperationStorage {
 
     @Override
     public void save(Operation operation) throws SQLException {
-        PreparedStatement preparedStatement = DBConnection.connection().
+        PreparedStatement preparedStatement = DBConnectionFactory.connection().
                 prepareStatement("insert into training15operationstorage values (default,?,?,?,?,?,?)");
         preparedStatement.setDouble(1, operation.getNum1());
         preparedStatement.setDouble(2, operation.getNum2());
@@ -43,7 +40,7 @@ public class DBOperationStorage implements OperationStorage {
 
     @Override
     public List<Operation> findAllOperationByUserName(String username) throws SQLException {
-        PreparedStatement preparedStatement = DBConnection.connection().
+        PreparedStatement preparedStatement = DBConnectionFactory.connection().
                 prepareStatement("select * from training15operationstorage where \"user\"=?");
         preparedStatement.setString(1, username);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -54,7 +51,7 @@ public class DBOperationStorage implements OperationStorage {
                     .num1(resultSet.getDouble(2))
                     .num2(resultSet.getDouble(3))
                     .operation(resultSet.getString(4))
-                    .user(userStorage.findByUserName(resultSet.getString(5)).get())
+                    .user(userDao.findByUserName(resultSet.getString(5)).get())
                     .result(resultSet.getDouble(6))
                     .date(resultSet.getDate(7))
                     .build();
