@@ -1,5 +1,7 @@
 package tms.servlet.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tms.servlet.entity.Operation;
 import tms.servlet.entity.User;
 import tms.servlet.dao.DBOperationDao;
@@ -12,6 +14,7 @@ import java.sql.SQLException;
 public class CalculatorServiceImpl implements CalculatorService{
     private final OperationDao operationDao = DBOperationDao.getInstance();
     private static volatile CalculatorServiceImpl instance;
+    private Logger logger = LoggerFactory.getLogger(CalculatorServiceImpl.class);
 
     private CalculatorServiceImpl() {
     }
@@ -51,7 +54,9 @@ public class CalculatorServiceImpl implements CalculatorService{
                 .build();
         try {
             operationDao.save(saveOperation);
+            logger.info("Saving an operation");
         } catch (SQLException e) {
+            logger.error("Error", e);
             throw new RuntimeException(e);
         }
         return result;

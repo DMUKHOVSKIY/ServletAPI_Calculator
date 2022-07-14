@@ -91,6 +91,33 @@ public class Operation {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Operation operation1 = (Operation) o;
+
+        if (Double.compare(operation1.num1, num1) != 0) return false;
+        if (Double.compare(operation1.num2, num2) != 0) return false;
+        if (Double.compare(operation1.result, result) != 0) return false;
+        return operation != null ? operation.equals(operation1.operation) : operation1.operation == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result1;
+        long temp;
+        temp = Double.doubleToLongBits(num1);
+        result1 = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(num2);
+        result1 = 31 * result1 + (int) (temp ^ (temp >>> 32));
+        result1 = 31 * result1 + (operation != null ? operation.hashCode() : 0);
+        temp = Double.doubleToLongBits(result);
+        result1 = 31 * result1 + (int) (temp ^ (temp >>> 32));
+        return result1;
+    }
+
+    @Override
     public String toString() {
         return "Operation{" +
                 "num1=" + num1 +

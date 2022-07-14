@@ -1,5 +1,7 @@
 package web.servlet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tms.servlet.entity.User;
 import tms.servlet.dao.DBUserDao;
 import tms.servlet.dao.UserDao;
@@ -17,6 +19,7 @@ import java.util.Optional;
 public class RegistrationServlet extends HttpServlet {
 
     private final UserDao userDao = DBUserDao.getInstance();
+    private Logger logger = LoggerFactory.getLogger(RegistrationServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -33,6 +36,7 @@ public class RegistrationServlet extends HttpServlet {
         try {
             byUserName = userDao.findByUserName(username);
         } catch (SQLException e) {
+            logger.error("Error", e);
             throw new RuntimeException(e);
         }
 
@@ -47,7 +51,9 @@ public class RegistrationServlet extends HttpServlet {
                     .build();
             try {
                 userDao.save(user);
+                logger.info("Saving a user");
             } catch (SQLException e) {
+                logger.error("Error", e);
                 throw new RuntimeException(e);
             }
 
